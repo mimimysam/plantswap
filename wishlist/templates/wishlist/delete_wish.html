@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Plant Swap</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="title">Plant Swap</h1>
+    </div>
+    <div class="container">
+        <h2>Delete Wish</h2>
+    </div>
+    <p>Are you sure you want to delete "{{wish}}"?</p>
+    <div>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <input type="submit" name="Confirm">
+        </form>
+    </div>
+    <div class="content">
+        <a href="{% url 'home' %}">Cancel</a>
+    </div>
+
+</body>
+
+</html>

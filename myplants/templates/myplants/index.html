@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Plant Swap</title>
+    <style>
+        .username {margin-bottom: 0px;}
+        .address {margin-bottom: 0px; margin-top: 0px;}
+        .birthday {margin-bottom: 0px; margin-top: 0px;}
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="title">Plant Swap</h1>
+    </div>
+
+    <div class="container">
+        <h2 class="username">Ada Lovelace</h2>
+        <h3 class="address">Address</h3>
+        <p class="address">123 Fake St, Apt 101</p>
+        <p class="address">San Francisco, CA 94103</p>
+        <h3 class="birthday">Birthday</h3>
+        <p class="birthday">Jan 11</p>
+    </div>
+
+    <div class="container">
+        <h2>Wishlist</h2>
+        <ol>
+        {% for wish in wishes %}
+            <li>{{ wish.name }}</li>
+        {% endfor %}
+        </ol>
+        <div class="content">
+            <a href="{% url 'add_wish' %}">Edit</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Available for Trade</h2>
+        <ol>
+        {% for plant in plants %}
+            <li>{{ plant.name }}</li>
+        {% endfor %}
+        </ol>
+    <div class="content">
+        <a href="{% url 'add_plant' %}">Edit</a>
+    </div>
+    </div>
+</body>
+
+</html>
