@@ -7,7 +7,7 @@ from .forms import PlantForm
 @login_required(login_url='login/')
 def index(request):
     plants = Plant.objects.all()
-    wishes = Wish.objects.all()
+    wishes = Wish.objects.filter(user=request.user)
     context = {'plants' : plants, 'wishes' : wishes}
     return render(request, 'myplants/index.html', context)
 
