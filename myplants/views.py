@@ -6,18 +6,19 @@ from .forms import PlantForm
 
 @login_required(login_url='login/')
 def index(request):
-    plants = Plant.objects.all()
+    plants = Plant.objects.filter(user=request.user)
     wishes = Wish.objects.filter(user=request.user)
     context = {'plants' : plants, 'wishes' : wishes}
     return render(request, 'myplants/index.html', context)
 
 def add_plant(request):
-    plants = Plant.objects.all()
+    plants = Plant.objects.filter(user=request.user)
 
     if request.method == 'POST':
         form = PlantForm(request.POST)
 
         if form.is_valid():
+            form.instance.user = request.user
             form.save()
             return redirect('home')
     else:
