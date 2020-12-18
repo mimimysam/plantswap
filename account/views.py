@@ -53,7 +53,7 @@ def account_view(request):
         form = AccountUpdateForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            # print ("Account has been updated.")
+
     else:
         form = AccountUpdateForm(
                 initial={
