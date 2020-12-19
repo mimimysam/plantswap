@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Plant
+from account.models import Account
 from wishlist.models import Wish
 from .forms import PlantForm
 
@@ -8,7 +9,10 @@ from .forms import PlantForm
 def index(request):
     plants = Plant.objects.filter(user=request.user)
     wishes = Wish.objects.filter(user=request.user)
-    context = {'plants' : plants, 'wishes' : wishes}
+    accounts = Account.objects.all()
+    # myAccount = Account.objects.get(user=request.user)
+
+    context = {'plants' : plants, 'wishes' : wishes, 'accounts' : accounts}
     return render(request, 'myplants/index.html', context)
 
 def add_plant(request):
