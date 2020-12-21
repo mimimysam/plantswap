@@ -63,3 +63,11 @@ def delete_plant(request, pk):
 
 	context = {'plant' : plant}
 	return render(request, 'myplants/delete_plant.html', context)
+
+def other_user(request, pk):
+    plants = Plant.objects.filter(user__id=pk).values('name')
+    wishes = Wish.objects.filter(user__id=pk).values('name')
+    account = Account.objects.get(id=pk)
+
+    context = {'plants' : plants, 'wishes' : wishes, 'account' : account}
+    return render(request, 'myplants/other_user.html', context)

@@ -15,13 +15,20 @@ fetch(`get_locations`)
     .then(response => response.json())
     .then(data => locations = data)
     .then(() => locations.forEach(addMarkers))
+    .then(() => locations.forEach(get_plants_by_user))
+
+async function get_plants_by_user(locations) {
+    let response = await fetch(`get_plants_by_user/${locations.id}`)
+    let text = await response.json()
+    console.log(text)
+}
 
 function addMarkers(locations) {
     console.log(locations)
 
-    fetch(`get_plants_by_user/${locations.id}`)
-        .then(response => response.json())
-        .then(data => console.log(data))
+    // fetch(`get_plants_by_user/${locations.id}`)
+    //     .then(response => response.json())
+    //     .then(data => console.log(data))
 
     var point = new google.maps.LatLng(locations.latitude,locations.longitude);
     // var image = '{{ STATIC_PREFIX }}'+ 'checkmark.png';
