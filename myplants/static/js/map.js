@@ -11,13 +11,18 @@ function initMap() {
     });
 }
 
-fetch("get_locations")
+fetch(`get_locations`)
     .then(response => response.json())
     .then(data => locations = data)
     .then(() => locations.forEach(addMarkers))
 
 function addMarkers(locations) {
     console.log(locations)
+
+    fetch(`get_plants_by_user/${locations.id}`)
+        .then(response => response.json())
+        .then(data => console.log(data))
+
     var point = new google.maps.LatLng(locations.latitude,locations.longitude);
     // var image = '{{ STATIC_PREFIX }}'+ 'checkmark.png';
     var marker = new google.maps.Marker({
@@ -28,17 +33,16 @@ function addMarkers(locations) {
         // title: '{{ mark.id }}',
     });
     marker['infowindow']  = new google.maps.InfoWindow({
-            content: "<h1>'{{account.first_name}}'</h1> <br> '{{ account.city }}'",
+        content: locations.first_name + "<br>" + locations.email + "<br>" + "Available plants:"
     });
     google.maps.event.addListener(marker, 'click', function() {
-        //window.location.href = this.url;
-            this['infowindow'].open(map, this);
+        // window.location.href = this.url;
+        this['infowindow'].open(map, this);
     });
     google.maps.event.addListener(marker, 'mouseover', function() {
-        // this['infowindow'].open(map, this);
-            });
+        this['infowindow'].open(map, this);
+    });
     google.maps.event.addListener(marker, 'mouseout', function() {
-        // this['infowindow'].close(map, this);
-
+        this['infowindow'].close(map, this);
     });
   }
