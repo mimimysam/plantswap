@@ -4,16 +4,22 @@ from .models import Plant
 from account.models import Account
 from wishlist.models import Wish
 from .forms import PlantForm
+import json
+from django.core.serializers.json import DjangoJSONEncoder
+from django.http import JsonResponse
 
 @login_required(login_url='login/')
 def index(request):
     plants = Plant.objects.filter(user=request.user)
     wishes = Wish.objects.filter(user=request.user)
     accounts = Account.objects.all()
-    # myAccount = Account.objects.get(user=request.user)
 
     context = {'plants' : plants, 'wishes' : wishes, 'accounts' : accounts}
     return render(request, 'myplants/index.html', context)
+
+def get_locations(request):
+    resp = Account.objects.all().values('latitude', 'longitude')
+    return JsonResponse(list(resp), safe=False)
 
 def add_plant(request):
     plants = Plant.objects.filter(user=request.user)

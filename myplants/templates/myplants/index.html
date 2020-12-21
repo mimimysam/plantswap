@@ -21,8 +21,12 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9inM6bVU18aC3D2VoiBTQqQJToh0DYbQ&callback=initMap">
     </script>
     {% load static %} 
+    <script>
+        var lat = "{{request.user.latitude}}";
+        var lng = "{{request.user.longitude}}";
+        var accounts = "{{accounts}}";
+    </script>
     <script src="{% static 'js/map.js' %}"></script>
-
 </head>
 
 <body>
@@ -38,7 +42,9 @@
     </div>
     <hr>
     <div class="body">
-    <div id="mapPanel"></div>
+    <div id="mapPanel">
+        <!-- <p>center=({{request.user.latitude}}, {{request.user.longitude}})</p> -->
+    </div>
     <div class="userInfoPanel">
         <div class="container">
             <h2 class="username">{{request.user.first_name}} {{request.user.last_name}}</h2>

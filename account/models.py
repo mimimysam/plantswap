@@ -98,7 +98,6 @@ class Account(AbstractBaseUser):
 
     def save(self, *args, **kwargs):
         ssl._create_default_https_context = ssl._create_unverified_context
-
         address = "%s, %s, %s, %s" % (self.address, self.city, self.state, self.zip_code)
         location = address.replace(" ", "+")
 
@@ -109,7 +108,6 @@ class Account(AbstractBaseUser):
 
     def geocode(self, location):
         address = urllib.parse.quote_plus(location)
-
         request = "https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s" % (location, settings.GOOGLE_API_KEY)
         response = requests.get(request)
         data = response.json()
