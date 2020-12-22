@@ -18,7 +18,7 @@ def add_wish(request):
         form = WishForm()
 
     context = {'form' : form, 'wishes' : wishes}
-    return render(request, 'wishlist/add_wish.html', context)
+    return render(request, 'myplants/add_plant.html', context)
 
 def update_wish(request, pk):
     wish = Wish.objects.get(id=pk)
