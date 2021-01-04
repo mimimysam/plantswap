@@ -1,8 +1,11 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+import urllib.request, ssl, requests
+from decimal import Decimal
 
 class MyAccountManager(BaseUserManager):
-    def create_user(self, email, username, first_name, last_name, address, city, state, zip_code, birthday, password=None):
+    def create_user(self, email, username, first_name, last_name, address, city, state, zip_code, birthday, latitude, longitude, password=None):
         if not email:
             raise ValueError("Users must provide an email to create an account.")
         if not first_name:
@@ -29,14 +32,16 @@ class MyAccountManager(BaseUserManager):
                 city = city,
                 state = state,
                 zip_code = zip_code,
-                birthday = birthday
+                birthday = birthday,
+                latitude = latitude,
+                longitude = longitude
             )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
     
-    def create_superuser(self, email, username, first_name, last_name, address, city, state, zip_code, birthday, password):
+    def create_superuser(self, email, username, first_name, last_name, address, city, state, zip_code, birthday, latitude, longitude, password):
         user =  self.create_user(
                 email = self.normalize_email(email),
                 username = username,
@@ -47,7 +52,9 @@ class MyAccountManager(BaseUserManager):
                 state = state,
                 zip_code = zip_code,
                 birthday = birthday,
-                password = password
+                password = password,
+                latitude = latitude,
+                longitude = longitude
             )
         user.is_admin = True
         user.is_staff = True
@@ -72,6 +79,8 @@ class Account(AbstractBaseUser):
     state = models.CharField(max_length=50)
     zip_code = models.CharField(max_length=20)
     birthday = models.CharField(max_length=100)
+    latitude = models.DecimalField(max_digits=18, decimal_places=10, null=True)
+    longitude = models.DecimalField(max_digits=18, decimal_places=10, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name', 'address', 'city', 'state', 'zip_code', 'birthday']
@@ -86,3 +95,24 @@ class Account(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+
+    def save(self, *args, **kwargs):
+        ssl._create_default_https_context = ssl._create_unverified_context
+        address = "%s, %s, %s, %s" % (self.address, self.city, self.state, self.zip_code)
+        location = address.replace(" ", "+")
+
+        if not self.latitude or not self.longitude:
+            self.latitude, self.longitude = self.geocode(location)
+
+        super(Account, self).save(*args, **kwargs)
+
+    def geocode(self, location):
+        address = urllib.parse.quote_plus(location)
+        request = "https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s" % (location, settings.GOOGLE_API_KEY)
+        response = requests.get(request)
+        data = response.json()
+
+        if data['status'] == 'OK':
+            latitude = data['results'][0]["geometry"]["location"]["lat"]
+            longitude = data['results'][0]["geometry"]["location"]["lng"]
+            return Decimal(latitude), Decimal(longitude)

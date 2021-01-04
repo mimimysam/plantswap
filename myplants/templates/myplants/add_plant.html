@@ -13,6 +13,27 @@
         <h1 class="title">Plant Swap</h1>
     </div>
     <div class="container">
+        <h2>Wishlist</h2>
+        <ol>
+        {% for wish in wishes %}
+            <li>{{ wish.name }}</li>
+            <a href="{% url 'update_wish' wish.id %}">Update</a>
+            <a href="{% url 'delete_wish' wish.id %}">Delete</a>
+        {% endfor %}
+        </ol>
+    </div>
+    <div>
+    <form method="POST" action="{% url 'add_wish' %}">
+        {% csrf_token %}
+        <div class="control">
+            {{ wishform.name }}
+        </div>
+        <div class="control">
+            <button class="button is-link">Add</button>
+        </div>
+    </form>
+    </div>
+    <div class="container">
         <h2>Available for Trade</h2>
         <ol>
         {% for plant in plants %}
@@ -26,7 +47,7 @@
     <form method="POST" action="{% url 'add_plant' %}">
         {% csrf_token %}
         <div class="control">
-            {{ form.name }}
+            {{ plantform.name }}
         </div>
         <div class="control">
             <button class="button is-link">Add</button>
