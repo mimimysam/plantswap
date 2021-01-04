@@ -27,9 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-GOOGLE_API_KEY = 'AIzaSyA9inM6bVU18aC3D2VoiBTQqQJToh0DYbQ'
-
-STATIC_URL = '/static/'
 
 # Application definition
 
