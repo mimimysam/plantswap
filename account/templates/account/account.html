@@ -1,29 +1,53 @@
+{% extends "base.html" %} {% load static %} {% block content %}
 <h2>My Account</h2>
 
+<div class="userInfoPanel">
+    <div class="container">
+        <h2 class="username">{{request.user.first_name}} {{request.user.last_name}}</h2>
+        <h3 class="address">Address</h3>
+        <p class="address">{{request.user.address}}</p>
+        <p class="address">{{request.user.city}}, {{request.user.state}} {{request.user.zip_code}}</p>
+        <h3 class="birthday">Birthday</h3>
+        <p class="birthday">{{request.user.birthday}}</p>
+    </div>
+    <hr>
+    <div class="container">
+        <h2>Wishlist</h2>
+        <ol>
+            {% for wish in wishes %}
+            <li>{{ wish.name }}</li>
+            {% endfor %}
+        </ol>
+    </div>
+    <div class="container">
+        <h2>Available for Trade</h2>
+        <ol>
+            {% for plant in plants %}
+            <li>{{ plant.name }}</li>
+            {% endfor %}
+        </ol>
+    </div>
+    <hr>
+    <div class="content">
+        <a class="btn btn-outline-dark" href="{% url 'add_plant' %}">Edit</a>
+    </div>
+</div>
+
 <form method="POST">
-    {% csrf_token %}
-    {% for field in account_form %}
-        <p>
-            {{field.label_tag}}
-            {{field}}
-            
-            {% if field.help_text %}
-                <small style="color: rgb(117, 116, 114);">{{field.help_text}}</small>
-            {% endif %}
-        </p>
-    {% endfor %}
-
-    {% for field in account_form %}
-        {% for error in field.errors %}
-            <p style="color: orangered;">{{error}}</p>
-        {% endfor %}
-    {% endfor %}
-
-    {% if account_form.non_field_errors %}
-        <div style="color:red">
-            <p>{{account_form.non_field_errors}}</p>
-        </div>
+    {% csrf_token %} {% for field in account_form %}
+    <p>
+        {{field.label_tag}} {{field}} {% if field.help_text %}
+        <small style="color: rgb(117, 116, 114);">{{field.help_text}}</small> {% endif %}
+    </p>
+    {% endfor %} {% for field in account_form %} {% for error in field.errors %}
+    <p style="color: orangered;">{{error}}</p>
+    {% endfor %} {% endfor %} {% if account_form.non_field_errors %}
+    <div style="color:red">
+        <p>{{account_form.non_field_errors}}</p>
+    </div>
     {% endif %}
     <button type="submit">Save Changes</button>
     <a href="{% url 'home' %}">Cancel</a>
 </form>
+
+{% endblock %}
