@@ -40,16 +40,17 @@ function addMarkers(locations) {
         // title: '{{ mark.id }}',
     });
     marker['infowindow']  = new google.maps.InfoWindow({
-        content: locations.first_name + "<br>" + locations.email + "<br>" + "Available plants:"
+        content: "<a href='http://127.0.0.1:8000/other_user/${locations.id}'>" + locations.first_name + "</a>" 
+        + "<br>" + locations.email + "<br>" + "Available plants:"
     });
     google.maps.event.addListener(marker, 'click', function() {
-        // window.location.href = this.url;
+        window.location.href = this.url;
         this['infowindow'].open(map, this);
     });
     google.maps.event.addListener(marker, 'mouseover', function() {
-        this['infowindow'].open(map, this);
+        // this['infowindow'].open(map, this);
     });
     google.maps.event.addListener(marker, 'mouseout', function() {
-        this['infowindow'].close(map, this);
+        // this['infowindow'].close(map, this);
     });
   }
