@@ -1,29 +1,47 @@
-<h2>Login</h2>
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
 
-<form method="POST">
-    {% csrf_token %}
-    {% for field in login_form %}
-        <p>
-            {{field.label_tag}}
-            {{field}}
-            
-            {% if field.help_text %}
-                <small style="color: rgb(117, 116, 114);">{{field.help_text}}</small>
-            {% endif %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+    <title>{% block title %}Plant Swap{% endblock %}</title>
+</head>
+
+<body>
+    <div class="login-form">
+
+        <form method="POST">
+            <div class="form-group">
+                {% csrf_token %} {% for field in login_form %} {{field.label_tag}} {{field}} {% if field.help_text %}
+                <small style="color: rgb(117, 116, 114);">{{field.help_text}}</small> {% endif %} {% endfor %} {% for field in login_form %} {% for error in field.errors %}
+                <p style="color: orangered;">{{error}}</p>
+                {% endfor %} {% endfor %} {% if login_form.non_field_errors %}
+                <div style="color:red">
+                    <p>{{login_form.non_field_errors}}</p>
+                </div>
+                {% endif %} &nbsp;
+                <button class="btn btn-outline-success" type="submit">Log In</button>
+            </div>
+        </form>
+    </div>
+    <div class="jumbotron login">
+        <h1 class="display-4">
+            <img class="logo" src="{% static 'images/logo and wordmark.png' %}" alt="Plant Swap Logo Mark"></h1>
+        <hr class="my-4">
+        <p class="lead">Plant Swap is a location-based platform for plant collectors to discover each other and trade plants.
         </p>
-    {% endfor %}
+        <p>Create an account to start your search for your nearby wishlist plants!</p>
+        <a class="btn btn-success btn-lg" href="{% url 'register' %}" role="button">Create Account</a>
+    </div>
+</body>
 
-    {% for field in login_form %}
-        {% for error in field.errors %}
-            <p style="color: orangered;">{{error}}</p>
-        {% endfor %}
-    {% endfor %}
-
-    {% if login_form.non_field_errors %}
-        <div style="color:red">
-            <p>{{login_form.non_field_errors}}</p>
-        </div>
-    {% endif %}
-    <button type="submit">Login</button>
-    <a href="{% url 'register' %}">Register</a>
-</form>
+</html>
