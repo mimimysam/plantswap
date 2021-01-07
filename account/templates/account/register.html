@@ -1,21 +1,19 @@
+{% extends "base.html" %} {% load static %} {% block content %}
 <h2>Register</h2>
 
 <form method="POST">
-    {% csrf_token %}
-    {% for field in registration_form %}
-        <p>
-            {{field.label_tag}}
-            {{field}}
-            
-            {% if field.help_text %}
-                <small style="color: rgb(117, 116, 114);">{{field.help_text}}</small>
-            {% endif %}
-
-            {% for error in field.errors %}
-                <p style="color: orangered;">{{error}}</p>
-            {% endfor %}
-        </p>
+    {% csrf_token %} {% for field in registration_form %}
+    <p>
+        {{field.label_tag}} {{field}} {% if field.help_text %}
+        <small style="color: rgb(117, 116, 114);">{{field.help_text}}</small> {% endif %} {% for error in field.errors %}
+        <p style="color: orangered;">{{error}}</p>
+        {% endfor %}
+    </p>
     {% endfor %}
+
     <button type="submit">Register</button>
+    <p>By registering, you are agreeing to share your location with the community and will treat everyone with respect and kindness.</p>
     <a href="{% url 'home' %}">Cancel</a>
 </form>
+
+{% endblock %}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <title>{% block title %}Plant Swap{% endblock %}</title>
+    <style>
+        .app {
+            width: 100%;
+            height: 100%
+        }
+        
+        .titleBanner {
+            width: 100%;
+            height: 20%;
+            display: flex;
+            justify-content: space-between
+        }
+        
+        .body {
+            display: flex;
+            width: 100%;
+            height: 80%;
+        }
+        
+        #mapPanel {
+            width: 75%;
+            height: 600px
+        }
+        
+        .userInfoPanel {
+            width: 25%;
+            padding-left: 10px;
+        }
+        
+        .username {
+            margin-bottom: 0px;
+        }
+        
+        .address {
+            margin-bottom: 0px;
+            margin-top: 0px;
+        }
+        
+        .birthday {
+            margin-bottom: 0px;
+            margin-top: 0px;
+        }
+    </style>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9inM6bVU18aC3D2VoiBTQqQJToh0DYbQ&callback=initMap">
+    </script>
+
+    <script>
+        var lat = "{{request.user.latitude}}";
+        var lng = "{{request.user.longitude}}";
+        var accounts = "{{accounts}}";
+    </script>
+    <script src="{% static 'js/map.js' %}"></script>
+</head>
+
+<body>
+    <div class="titleBanner">
+        <a href="{% url 'home' %}"><img src="{% static 'images/logo.svg' %}" alt="Plant Swap Logo Mark"><img src="{% static 'images/logoWordmark.svg' %}" alt="Plant Swap Wordmark"></a>
+        <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{request.user.first_name}}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{% url 'account' %}">Account</a>
+                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="app">
+        <div class="body">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</body>
+
+</html>
