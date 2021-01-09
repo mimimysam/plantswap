@@ -5,7 +5,7 @@ import urllib.request, ssl, requests
 from decimal import Decimal
 
 class MyAccountManager(BaseUserManager):
-    def create_user(self, email, username, first_name, last_name, address, city, state, zip_code, birthday, latitude, longitude, password=None):
+    def create_user(self, email, username, first_name, last_name, address, city, state, zip_code, birthday, password=None):
         if not email:
             raise ValueError("Users must provide an email to create an account.")
         if not first_name:
@@ -33,15 +33,13 @@ class MyAccountManager(BaseUserManager):
                 state = state,
                 zip_code = zip_code,
                 birthday = birthday,
-                latitude = latitude,
-                longitude = longitude
             )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
     
-    def create_superuser(self, email, username, first_name, last_name, address, city, state, zip_code, birthday, latitude, longitude, password):
+    def create_superuser(self, email, username, first_name, last_name, address, city, state, zip_code, birthday, password):
         user =  self.create_user(
                 email = self.normalize_email(email),
                 username = username,
@@ -52,9 +50,7 @@ class MyAccountManager(BaseUserManager):
                 state = state,
                 zip_code = zip_code,
                 birthday = birthday,
-                password = password,
-                latitude = latitude,
-                longitude = longitude
+                password = password
             )
         user.is_admin = True
         user.is_staff = True
