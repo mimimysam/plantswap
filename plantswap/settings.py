@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'myplants',
     'wishlist',
-    'account'
+    'account',
+    'swaps'
 ]
 
 MIDDLEWARE = [

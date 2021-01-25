@@ -20,5 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('myplants.urls')),
     path('', include('wishlist.urls')),
-    path('', include('account.urls'))
+    path('', include('account.urls')),
+    path('', include('swaps.urls'))
 ]
