@@ -1,3 +1,11 @@
+<style>
+    .suggestion {
+        width: 150px;
+        border: 2px solid green;
+        padding: 20px;
+    }
+</style>
+
 <form action="{% url 'search_plants' %}" method="GET" value="{{request.GET.q}}">
     Search <input type="text" name="q" value="{{request.GET.q}}" placeholder="Search for a plant..."/>
     <input type="submit" name="submit" value="Search"/>
@@ -5,16 +13,19 @@
     
 {% if submitbutton == 'Search' and request.GET.q != '' %}
 {% if results %}
-<h1>Results for <b>{{ request.GET.q }}</b></h1>
+<h2>Results for <b>{{ request.GET.q }}</b></h2>
 <br/><br/>
 
 {% for result in results %}
+<div class='suggestion'>
 
 {{result.name}}
 <br/>
-
 {{result.user}}
+({{result.user.id}})
 <br/>
+
+</div>
 
 {% endfor %}
 {% else %}
