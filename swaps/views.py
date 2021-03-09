@@ -12,12 +12,15 @@ def search_plants(request):
         if query is not None:
             lookups= Q(name__icontains=query)
             results= Plant.objects.filter(lookups).distinct()
+            print(results)
+            similar = []
+            perfect = []
 
             print("Search for:", query)
             print(request.user, "wants this plant")
             plants = Plant.objects.filter(user=request.user)
             print(request.user, "has these plants: ", plants)
-            
+
             for result in results:
                 print(result.user, "has this plant")
                 wishes = Wish.objects.filter(user=result.user)
@@ -25,12 +28,16 @@ def search_plants(request):
                 matches = plants.filter(name__in=wishes.values_list('name'))
                 print("Matches:", matches)
                 if not matches:
-                    print("Not a perfect match.")
+                    similar.append(result)
+                    print("Not a perfect match.", similar)
                 else:
-                    print("This is a perfect match!")
+                    perfect.append(result)
+                    print("This is a perfect match!", perfect)
 
             context={'results': results,
-                     'submitbutton': submitbutton}
+                    'similar': similar,
+                    'perfect': perfect,
+                    'submitbutton': submitbutton}
 
             return render(request, 'swaps/swaps.html', context)
         else:
@@ -38,21 +45,3 @@ def search_plants(request):
     else:
         return render(request, 'swaps/swaps.html')
 
-
-# def get_perfect_matches(request):
-#     if request.method == 'GET':
-#         query= request.GET.get('q')
-#         submitbutton= request.GET.get('submit')
-
-#         if query is not None:
-#             lookups= Q(name__icontains=query)
-#             results= Plant.objects.filter(lookups).distinct()
-
-#             context={'results': results,
-#                      'submitbutton': submitbutton}
-
-#             return render(request, 'swaps/swaps.html', context)
-#         else:
-#             return render(request, 'swaps/swaps.html')
-#     else:
-#         return render(request, 'swaps/swaps.html')

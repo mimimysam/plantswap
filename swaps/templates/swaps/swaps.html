@@ -9,26 +9,51 @@
 <form action="{% url 'search_plants' %}" method="GET" value="{{request.GET.q}}">
     Search <input type="text" name="q" value="{{request.GET.q}}" placeholder="Search for a plant..."/>
     <input type="submit" name="submit" value="Search"/>
-</form>
-    
+
 {% if submitbutton == 'Search' and request.GET.q != '' %}
+
+<h2>Results for '<b>{{ request.GET.q }}</b>':</h2>
+
 {% if results %}
-<h2>Results for <b>{{ request.GET.q }}</b></h2>
-<br/><br/>
 
-{% for result in results %}
+<!-- <p>Matches found</p> -->
+
 <div class='suggestion'>
-
-{{result.name}}
-<br/>
-{{result.user}}
-({{result.user.id}})
-<br/>
-
+    {% if perfect %}
+    {% for plant in perfect %}
+    <h3>Perfect match:</h3>
+    {{plant.name}}
+    <br/>
+    {{plant.user}}
+    ({{plant.user.id}})
+    <br/>
+    {% endfor %}
+    {% else %}
+    <p>No perfect matches for this query</p>
+    {% endif %}
 </div>
 
-{% endfor %}
+<div class='suggestion'>
+    {% if similar %}
+    {% for each in similar %}
+    <h3>Similar match:</h3>
+    {{each.name}}
+    <br/>
+    {{each.user}}
+    ({{each.user.id}})
+    <br/>
+    {% endfor %}
+    {% else %}
+    <p>No other results for this query</p>
+    {% endif %}
+</div>
+
 {% else %}
-No search results for this query
+
+<p>No search results for this query</p>
+
 {% endif %}
+
 {% endif %}
+
+</form>
